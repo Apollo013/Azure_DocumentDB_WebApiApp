@@ -45,6 +45,8 @@ Built using VS2015 Community
 |UriFactory|
 |IndexingPolicy|
 |RequestOptions|
+|asunc / await / Task|
+|Repository Pattern|
 
 ---
 ####Resources
