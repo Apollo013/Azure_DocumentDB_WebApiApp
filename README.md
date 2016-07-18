@@ -6,14 +6,14 @@ Built using VS2015 Community
 
 ---
 
-#####FEATURES
+#####CRUD Features
 |Feature|Database|Collection|Document|
 |-------|--------|----------|--------|
-|Insert| Yes | Yes | |
+|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | |
 |Update| | | |
-|Delete| Yes | Yes | |
-|Get / Read One | Yes | Yes | |
-|Get / Read All | Yes | Yes | |
+|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | |
+|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync | |
+|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | |
 
 ---
 
@@ -37,7 +37,19 @@ Built using VS2015 Community
 
 ---
 
-#####Resources
+####Misc Code Features
+|Feature|
+|-------|
+|DocumentClientException|
+|DocumentClient| 
+|UriFactory|
+|IndexingPolicy|
+|RequestOptions|
+|asunc / await / Task|
+|Repository Pattern|
+
+---
+####Resources
 |Title|Author|Publisher|
 |-----|------|---------|
 |[DocumentDB documentation](https://azure.microsoft.com/en-us/documentation/services/documentdb/)| | Microsoft Azure |
