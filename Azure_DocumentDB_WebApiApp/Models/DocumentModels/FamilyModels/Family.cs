@@ -1,13 +1,12 @@
-﻿using Azure_DocumentDB_WebApiApp.Models.DomainModels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Azure_DocumentDB_WebApiApp.Models
 
 
 {
-    public class Family : DocumentDM
-    {        
+    public class Family
+    {
         [Required]
         public string LastName { get; set; }
         [Required]

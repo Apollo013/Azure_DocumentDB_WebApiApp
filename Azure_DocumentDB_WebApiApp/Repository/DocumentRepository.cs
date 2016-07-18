@@ -1,5 +1,4 @@
-﻿using Azure_DocumentDB_WebApiApp.Models.DomainModels;
-using Microsoft.Azure.Documents;
+﻿using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
     /// Handles all operations in relation to Document's
     /// </summary>
     /// <typeparam name="T">The Type/schema of document we are dealing with</typeparam>
-    public class DocumentRepository<T> : CollectionRepository where T : DocumentDM
+    public class DocumentRepository<T> : CollectionRepository where T : class
     {
         #region CONSTRUCTORS
         public DocumentRepository() : base() { }

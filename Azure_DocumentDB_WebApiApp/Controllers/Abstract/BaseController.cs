@@ -1,6 +1,8 @@
 ﻿using Azure_DocumentDB_WebApiApp.Helpers.ActionResults;
-using Azure_DocumentDB_WebApiApp.Models;
 using Azure_DocumentDB_WebApiApp.Repository;
+using Microsoft.Azure.Documents.Client;
+using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -9,16 +11,34 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
     public class BaseController : ApiController
     {
         #region PROPERTIES
-        private DatabaseRepository databaseClient;
+
+        private DocumentClient _client;
+
+        public DocumentClient Client
+        {
+            get
+            {
+                if (_client == null)
+                {
+                    string endpointUri = ConfigurationManager.AppSettings["endPointUri"];
+                    string authKey = ConfigurationManager.AppSettings["authKey"];
+                    _client = new DocumentClient(new Uri(endpointUri), authKey);
+                }
+                return _client;
+            }
+            set { _client = value; }
+        }
+
+        private DatabaseRepository _databaseClient;
         protected DatabaseRepository DataBaseClient
         {
             get
             {
-                if (databaseClient == null)
+                if (_databaseClient == null)
                 {
-                    databaseClient = new DatabaseRepository();
+                    _databaseClient = new DatabaseRepository(Client);
                 }
-                return databaseClient;
+                return _databaseClient;
             }
         }
 
@@ -35,18 +55,6 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
             }
         }
 
-        private DocumentRepository<Family> familyClient;
-        protected DocumentRepository<Family> FamilyClient
-        {
-            get
-            {
-                if (familyClient == null)
-                {
-                    familyClient = new DocumentRepository<Family>();
-                }
-                return familyClient;
-            }
-        }
         #endregion
 
         #region ACTION RESULTS

@@ -1,4 +1,5 @@
 ﻿using Azure_DocumentDB_WebApiApp.Models.ViewModels;
+using Azure_DocumentDB_WebApiApp.Repository.Abstract;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
     /// <summary>
     /// Handles all operations in relation to DocumentCollection's
     /// </summary>
-    public class CollectionRepository : DatabaseRepository
+    public class CollectionRepository : RepositoryBase
     {
         #region PROPERTIES
         protected DocumentCollection Collection { get; set; }

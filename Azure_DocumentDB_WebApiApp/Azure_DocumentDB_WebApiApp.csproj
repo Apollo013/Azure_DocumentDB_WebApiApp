@@ -189,8 +189,7 @@
     <Compile Include="Controllers\Abstract\BaseController.cs" />
     <Compile Include="Controllers\CollectionController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
-    <Compile Include="Controllers\DocumentDBController.cs" />
-    <Compile Include="Controllers\FamilyController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Helpers\ActionResults\CreatedActionResult.cs" />
     <Compile Include="Helpers\ExtensionMethods\StringExtensionMethods.cs" />
     <Compile Include="Helpers\ActionResults\NoContentActionResult.cs" />
@@ -198,8 +197,6 @@
     <Compile Include="ModelFactories\ClientModelFactory.cs" />
     <Compile Include="Models\DocumentModels\FamilyModels\Address.cs" />
     <Compile Include="Models\DocumentModels\FamilyModels\Child.cs" />
-    <Compile Include="Models\DomainModels\CollectionDM.cs" />
-    <Compile Include="Models\DomainModels\DocumentDM.cs" />
     <Compile Include="Models\ViewModels\DatabaseVM.cs" />
     <Compile Include="Models\DocumentModels\FamilyModels\Family.cs" />
     <Compile Include="Models\DocumentModels\FamilyModels\Parent.cs" />
@@ -207,9 +204,10 @@
     <Compile Include="Models\ViewModels\CollectionVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Abstract\IRepository.cs" />
+    <Compile Include="Repository\Abstract\RepositoryBase.cs" />
     <Compile Include="Repository\CollectionRepository.cs" />
     <Compile Include="Repository\DatabaseRepository.cs" />
-    <Compile Include="Repository\DocumentRepository.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup />

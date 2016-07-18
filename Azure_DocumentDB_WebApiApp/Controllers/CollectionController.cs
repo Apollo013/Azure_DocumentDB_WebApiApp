@@ -17,8 +17,8 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <param name="colid">collection id</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("")]
-        public async Task<IHttpActionResult> Post(string dbid, [FromBody] string colid)
+        [Route("{colid}")]
+        public async Task<IHttpActionResult> Post(string dbid, string colid)
         {
             try
             {

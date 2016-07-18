@@ -1,0 +1,125 @@
+public class Repository<T> : DocumentDBClient where T : class
+    {
+        public Repository(string databaseName, string collectionName) : base(databaseName, collectionName)
+        { }
+
+        /// <summary>
+        /// Get a list of T, with an optional predicate
+        /// </summary>
+        /// <param name="predicate">The linq expression Where clause</param>
+        /// <returns>An IEnumerable of T</returns>
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate = null)
+        {
+            IDocumentQuery<T> query;
+
+            // Check if a predicate was provided to filter results
+            if (predicate != null)
+            {
+                query = Client.CreateDocumentQuery<T>(Collection.DocumentsLink)
+                    .Where(predicate)
+                    .AsDocumentQuery();
+            }
+            else
+            {
+                query = Client.CreateDocumentQuery<T>(Collection.DocumentsLink)
+                    .AsDocumentQuery();
+            }
+
+            // Process results
+            List<T> results = new List<T>();
+
+            while (query.HasMoreResults)
+            {
+                results.AddRange(await query.ExecuteNextAsync<T>());
+            }
+
+            // Return Results
+            return results;
+        }
+
+
+}
+        
+/** GET DATABASE        
+        /// <summary>
+        /// Gets a specified database
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <returns>A Database object if it exists, null otherwise</returns>
+        protected async Task<Database> GetDatabaseAsync(string dbid)
+        {
+            dbid.Check("No valid database id provided");
+            return await Task.Run(() => Client.CreateDatabaseQuery().Where(db => db.Id == dbid).AsEnumerable().FirstOrDefault());
+        }
+
+
+/** CREATE COLLECTION
+            //Task<DocumentCollection> dc = Task<DocumentCollection>.Factory.StartNew(() => GetDocumentCollection(collectionModel));
+            //Collection = dc.Result;
+            ;// null;// dc.Result;
+            // Create it if it does not already exist
+            if (Collection == null)
+            {
+                //Collection = await Client.CreateDocumentCollectionAsync(Database.SelfLink, new DocumentCollection { Id = collectionModel.CollectionId });
+            }
+			
+			
+/** GET COLLECTION
+
+            // Make sure the database exists
+            //await CreateDatabaseAsync(dbid);
+
+            //var db = await GetDatabaseAsync(dbid);
+            // Get the document collection
+            //return Client.CreateDocumentCollectionQuery(db.SelfLink).Where(c => c.Id == colid).ToArray().FirstOrDefault();
+
+			
+/** GET COLLECTIONS
+            //var db = await GetDatabaseAsync(dbid);
+            //return Client.CreateDocumentCollectionQuery(db.SelfLink).ToList().Select(c => ModelFactory.Create(c));
+
+			
+/** CREATE DOCUMENT
+        public async Task<Document> CreateDocument(object documentObject)
+        {
+            // Make sure the collection exists (Will also ensure that the database exists)
+            Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
+
+            var result = await client.CreateDocumentAsync(collection.SelfLink, documentObject);
+            var document = result.Resource;
+
+            Console.WriteLine("Created new document: {0}\r\n{1}", document.Id, document);
+            return result;
+        }
+		
+		
+/** DOC OPERATIONS		
+await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(dbName, collectionName), family);
+await this.client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(dbName, collectionName, family.Id), family);
+await this.client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(dbName, collectionName, documentName));
+
+
+
+           IDocumentQuery<Family> familyQueryAsync = (from family in this.client.CreateDocumentQuery<Family>(UriFactory.CreateDocumentCollectionUri(dbName, collectionName), queryOptions)
+                                                       where family.LastName == "Andersen"
+                                                       select family)
+                                                       .AsDocumentQuery();
+
+            // Process the results            
+            while (familyQueryAsync.HasMoreResults)
+            {
+                FeedResponse<Family> family = await familyQueryAsync.ExecuteNextAsync<Family>();
+
+                if (family.Any())
+                {
+                    Family doc = family.Single();
+                    this.PrintSubTitle($"Running Query Asynchronously: {doc.Id}");
+                }
+                else
+                {
+                    this.PrintSubTitle($"Nothing Found");
+                }
+            }
+
+			
+			
