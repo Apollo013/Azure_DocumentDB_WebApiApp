@@ -171,3 +171,105 @@ await this.client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(dbName, colle
 
 			
 			
+
+
+
+        /*
+        /// <summary>
+        /// Repalces a Document
+        /// </summary>
+        /// <param name="document">The document to replace</param>
+        /// <returns></returns>
+        public async Task ReplaceDocumentAsync(T document)
+        {
+                        // Check parameters
+            dbid.Check("No valid database id provided");
+            colid.Check("No valid collection id provided");
+
+            try
+            {
+                await Client.DeleteDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(dbid, colid));
+            }
+            catch (DocumentClientException)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task DeleteDocumentAsync(DocumentDM documentDetails)
+        {
+            // Check that the document already exists
+            var doc = Task.Factory.StartNew(() => { return GetDocument(documentDetails); });
+
+            if (doc.Result != null)
+            {
+                await Client.DeleteDocumentAsync(doc.Result.SelfLink);
+            }
+        }
+
+        /// <summary>
+        /// Get a list of T, with an optional predicate
+        /// </summary>
+        /// <param name="predicate">The linq expression Where clause</param>
+        /// <returns>An IEnumerable of T</returns>
+        public async Task<IEnumerable<T>> GetDocumentAsync(DocumentDM documentDetails, Expression<Func<T, bool>> predicate = null)
+        {
+            // Make sure the collection exists (Will also ensure that the database exists)
+            //Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
+
+            IDocumentQuery<T> query;
+
+            // Check if a predicate was provided to filter results
+            if (predicate != null)
+            {
+                query = Client.CreateDocumentQuery<T>(Collection.DocumentsLink)
+                    .Where(predicate)
+                    .AsDocumentQuery();
+            }
+            else
+            {
+                query = Client.CreateDocumentQuery<T>(Collection.DocumentsLink)
+                    .AsDocumentQuery();
+            }
+
+            // Process results
+            List<T> results = new List<T>();
+
+            while (query.HasMoreResults)
+            {
+                results.AddRange(await query.ExecuteNextAsync<T>());
+            }
+
+            // Return
+            return results;
+        }
+
+
+        /// <summary>
+        /// Gets a document
+        /// </summary>
+        /// <param name="documentDetails">Details necessary to retrieve the document</param>
+        /// <returns>A Document object</returns>
+        public Document GetDocument(DocumentDM documentDetails)
+        {
+            if (documentDetails == null)
+            {
+                throw new ArgumentNullException("Please specify valid document collection properties");
+            }
+            else if (String.IsNullOrEmpty(documentDetails.Id))
+            {
+                throw new ArgumentNullException("Please specify valid name for the document");
+            }
+
+            // Make sure the collection exists (Will also ensure that the database exists)
+            //Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
+
+            return Client.CreateDocumentQuery<Document>(
+                Collection.SelfLink,
+                $"SELECT * FROM c WHERE c.id = '{documentDetails.Id}'")
+                .AsEnumerable()
+                .FirstOrDefault();
+        }
+        */			
+			
