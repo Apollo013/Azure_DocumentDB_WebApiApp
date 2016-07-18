@@ -17,13 +17,19 @@ Built using VS2015 Community
 
 ---
 
-####Http Requests
+####Database Http Requests
 |Verb|Url|Data|Description|
 |----|---|----|-----------|
 |POST|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}| |Creates a new database|
 |DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}| |Deletes a database|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}| |Gets a single database|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db| |Gets a list of all databases|
+
+---
+
+####Collection Http Requests
+|Verb|Url|Data|Description|
+|----|---|----|-----------|
 |POST|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls| collection id (colid) |Creates a new collection|
 |DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}| |Deletes a collection|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}| |Gets a single collection|
