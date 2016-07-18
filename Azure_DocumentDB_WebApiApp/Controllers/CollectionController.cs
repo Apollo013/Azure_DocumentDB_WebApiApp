@@ -68,7 +68,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest(ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         {
             try
             {
-                return await CollectionClient.GetCollectionsDetailsAsync(dbid);
+                return await CollectionClient.GetCollectionDetailsAsync(dbid);
             }
             catch (Exception ex)
             {
