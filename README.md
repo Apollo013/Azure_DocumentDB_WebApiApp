@@ -41,7 +41,7 @@ Built using VS2015 Community
 |LEVEL|CREATE|DELETE|UPDATE|GET ONE|GET ALL|
 |-----|------|------|------|-------|-------|
 |Database|CreateDatabaseAsync|DeleteDatabaseAsync| | ReadDatabaseAsync | CreateDatabaseQuery |
-|Collection| | | | | |
+|Collection| CreateDocumentCollectionAsync | DeleteDocumentCollectionAsync | | ReadDocumentCollectionAsync | ReadDocumentCollectionFeedAsync |
 |Document| | | | | |
 
 ---
@@ -52,6 +52,8 @@ Built using VS2015 Community
 |DocumentClientException|
 |DocumentClient| 
 |UriFactory|
+|IndexingPolicy|
+|RequestOptions|
 
 ---
 ####Resources
