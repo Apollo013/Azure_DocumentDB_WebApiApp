@@ -6,7 +6,7 @@ Built using VS2015 Community
 
 ---
 
-#####FEATURES
+#####CRUD Features
 |Feature|Database|Collection|Document|
 |-------|--------|----------|--------|
 |Insert| Yes | Yes | |
@@ -37,7 +37,24 @@ Built using VS2015 Community
 
 ---
 
-#####Resources
+####DocumentClient Methods
+|LEVEL|CREATE|DELETE|UPDATE|GET ONE|GET ALL|
+|-----|------|------|------|-------|-------|
+|Database|CreateDatabaseAsync|DeleteDatabaseAsync| | ReadDatabaseAsync | CreateDatabaseQuery |
+|Collection| | | | | |
+|Document| | | | | |
+
+---
+
+####Misc Code Features
+|Feature|
+|-------|
+|DocumentClientException|
+|DocumentClient| 
+|UriFactory|
+
+---
+####Resources
 |Title|Author|Publisher|
 |-----|------|---------|
 |[DocumentDB documentation](https://azure.microsoft.com/en-us/documentation/services/documentdb/)| | Microsoft Azure |
