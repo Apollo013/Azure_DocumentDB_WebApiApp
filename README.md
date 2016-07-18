@@ -41,7 +41,7 @@ Built using VS2015 Community
 |Title|Author|Publisher|
 |-----|------|---------|
 |[DocumentDB documentation](https://azure.microsoft.com/en-us/documentation/services/documentdb/)| | Microsoft Azure |
-|[DocumentDB Tutorial](http://www.tutorialspoint.com/documentdb/index.htm| | Tutorials Point |
+|[DocumentDB Tutorial](http://www.tutorialspoint.com/documentdb/index.htm)| | Tutorials Point |
 |[azure-documentdb-dotnet](https://github.com/Azure/azure-documentdb-dotnet)| | Github |
 |[Azure: New DocumentDB NoSQL Service](http://weblogs.asp.net/scottgu/azure-new-documentdb-nosql-service-new-search-service-new-sql-alwayson-vm-template-and-more)| Scott Guthrie | ScottGu's Blog |
 
