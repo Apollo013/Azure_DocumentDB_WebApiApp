@@ -5,18 +5,27 @@ namespace Azure_DocumentDB_WebApiApp.ModelFactories
 {
     public class ClientModelFactory
     {
-        public DatabaseVM Create(Database model)
+        public ItemVM Create(Database model)
         {
-            return new DatabaseVM
+            return new ItemVM
             {
                 Id = model.Id,
                 ResourceId = model.ResourceId
             };
         }
 
-        public CollectionVM Create(DocumentCollection model)
+        public ItemVM Create(DocumentCollection model)
         {
-            return new CollectionVM
+            return new ItemVM
+            {
+                Id = model.Id,
+                ResourceId = model.ResourceId
+            };
+        }
+
+        public ItemVM Create(Document model)
+        {
+            return new ItemVM
             {
                 Id = model.Id,
                 ResourceId = model.ResourceId

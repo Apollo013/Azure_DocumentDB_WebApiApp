@@ -25,9 +25,13 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
                 await CollectionClient.CreateCollectionAsync(dbid, colid);
                 return Created(Request, "Collection Created");
             }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                throw ex;
+                return InternalServerError(ex);
             }
         }
 
@@ -46,9 +50,13 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
                 await CollectionClient.DeleteCollectionAsync(dbid, colid);
                 return Ok("Collection Removed");
             }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                throw ex;
+                return InternalServerError(ex);
             }
         }
 
@@ -66,9 +74,13 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             {
                 return Ok(await CollectionClient.GetCollectionDetailsAsync(dbid, colid));
             }
-            catch (Exception ex)
+            catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
@@ -79,7 +91,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<CollectionVM>> Get(string dbid)
+        public async Task<IEnumerable<ItemVM>> Get(string dbid)
         {
             try
             {

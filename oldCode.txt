@@ -40,7 +40,7 @@ public class Repository<T> : DocumentDBClient where T : class
 
 }
         
-/** GET Collection
+/** GET COLLECTION
         /// <summary>
         /// Gets a document collection object for a specified collection id
         /// </summary>
@@ -57,7 +57,7 @@ public class Repository<T> : DocumentDBClient where T : class
             //return await Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(dbid, colid));
         }
 
-		
+
 /** GET DATABASE        
         /// <summary>
         /// Gets a specified database
@@ -110,6 +110,36 @@ public class Repository<T> : DocumentDBClient where T : class
             return result;
         }
 		
+
+            /*
+            // Check that the document doe's not already exists
+            var doc = Task.Factory.StartNew(() => { return GetDocument(document); });
+
+            if (doc.Result == null)
+            {
+                await Client.CreateDocumentAsync(Collection.SelfLink, document);
+            }
+            else
+            {
+                // We could make a call here to update the doc if it pre-exists
+                throw new Exception("Document Already Exists");
+            }
+            */
+
+/** REPALCE DOCUMENT
+            // Check that the document already exists
+            var doc = Task.Factory.StartNew(() => { return GetDocument(document); });
+
+            if (doc.Result != null)
+            {
+                await Client.ReplaceDocumentAsync(Collection.SelfLink, document);
+            }
+            else
+            {
+                // We could make a call here to insert the doc if it does not pre-exist
+                throw new Exception("Document Does' Not Exist");
+            }
+			
 		
 /** DOC OPERATIONS		
 await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(dbName, collectionName), family);

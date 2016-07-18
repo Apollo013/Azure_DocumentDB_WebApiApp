@@ -65,7 +65,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// </summary>
         /// <param name="dbid">database id</param>
         /// <returns></returns>
-        public async Task<DatabaseVM> GetDatabaseDetailsAsync(string dbid)
+        public async Task<ItemVM> GetDatabaseDetailsAsync(string dbid)
         {
             dbid.Check("No valid database id provided");
             var dbase = await Task.Run(() => Client.CreateDatabaseQuery().Where(db => db.Id == dbid).ToList().Select((d) => ModelFactory.Create(d)));
@@ -76,7 +76,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// Gets a list of databases for this account
         /// </summary>
         /// <returns>IEnumerable List of DatabaseVM objects</returns>
-        public async Task<IEnumerable<DatabaseVM>> GetDatabaseDetailsAsync()
+        public async Task<IEnumerable<ItemVM>> GetDatabaseDetailsAsync()
         {
             return await Task.Run(() => Client.CreateDatabaseQuery().ToList().Select((d) => ModelFactory.Create(d)));
         }

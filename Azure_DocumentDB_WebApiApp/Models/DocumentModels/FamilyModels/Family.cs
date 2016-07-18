@@ -7,6 +7,8 @@ namespace Azure_DocumentDB_WebApiApp.Models
 {
     public class Family
     {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
         [Required]
         public string LastName { get; set; }
         [Required]

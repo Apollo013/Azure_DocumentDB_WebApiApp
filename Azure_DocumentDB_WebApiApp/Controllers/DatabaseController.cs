@@ -30,7 +30,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return InternalServerError(ex);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return InternalServerError(ex);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return InternalServerError(ex);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<DatabaseVM>> Get()
+        public async Task<IEnumerable<ItemVM>> Get()
         {
             try
             {

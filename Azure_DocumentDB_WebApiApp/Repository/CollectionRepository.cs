@@ -39,9 +39,11 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             {
                 if (ex.StatusCode == HttpStatusCode.NotFound)
                 {
+                    var idxPol = new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 }) { IndexingMode = IndexingMode.Consistent };
+
                     await Client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(dbid),
-                        new DocumentCollection { Id = colid },
+                        new DocumentCollection { Id = colid, IndexingPolicy = idxPol },
                         new RequestOptions { OfferThroughput = 400 });
                 }
             }
@@ -75,7 +77,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// <param name="dbid">database id</param>
         /// <param name="colid">collection id</param>
         /// <returns></returns>
-        public async Task<CollectionVM> GetCollectionDetailsAsync(string dbid, string colid)
+        public async Task<ItemVM> GetCollectionDetailsAsync(string dbid, string colid)
         {
             // Check parameters
             dbid.Check("No valid database id provided");
@@ -97,12 +99,12 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// </summary>
         /// <param name="dbid">database id</param>
         /// <returns></returns>
-        public async Task<IEnumerable<CollectionVM>> GetCollectionDetailsAsync(string dbid)
+        public async Task<IEnumerable<ItemVM>> GetCollectionDetailsAsync(string dbid)
         {
             // Check parameters
             dbid.Check("No valid database id provided");
 
-            List<CollectionVM> colls = new List<CollectionVM>();
+            List<ItemVM> colls = new List<ItemVM>();
             foreach (var coll in await Client.ReadDocumentCollectionFeedAsync(UriFactory.CreateDatabaseUri(dbid)))
             {
                 colls.Add(ModelFactory.Create(coll));
