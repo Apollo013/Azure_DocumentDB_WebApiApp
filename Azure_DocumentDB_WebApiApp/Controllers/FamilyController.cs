@@ -2,13 +2,12 @@
 using Azure_DocumentDB_WebApiApp.Models;
 using Azure_DocumentDB_WebApiApp.Models.DomainModels;
 using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Azure_DocumentDB_WebApiApp.Controllers
 {
-    [RoutePrefix("api/family")]
+    [RoutePrefix("api/db/{dbid}/colls/{colid}/docs")]
     public class FamilyController : BaseController
     {
         /// <summary>
@@ -23,6 +22,17 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest("Please make sure all relevant information has been supplied");
+            }
+
+
+            Type type = Type.GetType("Azure_DocumentDB_WebApiApp.Models.Family");
+            if (type == null)
+            {
+                return BadRequest("Type null");
+            }
+            else
+            {
+                return Ok(type.Name);
             }
 
             try
@@ -93,17 +103,17 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <param name="documentDetails">Object containing details about the document</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("")]
-        public async Task<IHttpActionResult> Get([FromBody] DocumentDM documentDetails)
+        [Route("{docid}")]
+        public async Task<IHttpActionResult> Get(string dbid, string colid, string docid)
         {
             try
             {
-                Expression<Func<Family, bool>> predicate = doc => doc.Id == documentDetails.Id;
-                var families = await FamilyClient.GetAsync(documentDetails, predicate);
-                return Ok(families);
-          
+                //Expression<Func<Family, bool>> predicate = doc => doc.Id == documentDetails.Id;
+                //var families = await FamilyClient.GetAsync(documentDetails, predicate);
+                return Ok();
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

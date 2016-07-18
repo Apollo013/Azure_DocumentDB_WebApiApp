@@ -1,4 +1,4 @@
-﻿using Azure_DocumentDB_WebApiApp.Helpers;
+﻿using Azure_DocumentDB_WebApiApp.Helpers.ActionResults;
 using Azure_DocumentDB_WebApiApp.Models;
 using Azure_DocumentDB_WebApiApp.Repository;
 using System.Net.Http;
@@ -27,7 +27,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
         {
             get
             {
-                if(collectionClient == null)
+                if (collectionClient == null)
                 {
                     collectionClient = new CollectionRepository();
                 }

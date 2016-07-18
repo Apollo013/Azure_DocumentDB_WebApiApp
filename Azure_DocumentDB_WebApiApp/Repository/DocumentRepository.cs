@@ -38,13 +38,13 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             {
                 // We could make a call here to update the doc if it pre-exists
                 throw new Exception("Document Already Exists");
-            }            
+            }
         }
 
         /// <summary>
         /// Repalces a Document
         /// </summary>
-        /// <param name="document">The document to repalce</param>
+        /// <param name="document">The document to replace</param>
         /// <returns></returns>
         public async Task ReplaceDocumentAsync(T document)
         {
@@ -78,10 +78,10 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// </summary>
         /// <param name="predicate">The linq expression Where clause</param>
         /// <returns>An IEnumerable of T</returns>
-        public async Task<IEnumerable<T>> GetAsync(DocumentDM documentDetails, Expression<Func<T, bool>> predicate = null)
+        public async Task<IEnumerable<T>> GetDocumentAsync(DocumentDM documentDetails, Expression<Func<T, bool>> predicate = null)
         {
             // Make sure the collection exists (Will also ensure that the database exists)
-            Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
+            //Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
 
             IDocumentQuery<T> query;
 
@@ -110,6 +110,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             return results;
         }
 
+
         /// <summary>
         /// Gets a document
         /// </summary>
@@ -127,7 +128,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             }
 
             // Make sure the collection exists (Will also ensure that the database exists)
-            Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
+            //Task.Run(() => CreateCollectionAsync(documentDetails.Collection)).Wait();
 
             return Client.CreateDocumentQuery<Document>(
                 Collection.SelfLink,

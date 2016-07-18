@@ -15,12 +15,8 @@ namespace Azure_DocumentDB_WebApiApp.Repository
     /// </summary>
     public class DatabaseRepository : IDisposable
     {
-        #region PRIVATE VARS
-        private DocumentClient client;
-        private ClientModelFactory modelFactory;
-        #endregion
-
         #region PROPERTIES
+        private DocumentClient client;
         protected DocumentClient Client
         {
             get
@@ -34,7 +30,8 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         }
 
         protected Database Database { get; set; }
-        
+
+        private ClientModelFactory modelFactory;
         protected ClientModelFactory ModelFactory
         {
             get
@@ -59,21 +56,14 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         #region DOCUMENT CLIENT
 
         /// <summary>
-        /// Create a new DocumentDB Client
+        /// Create a DocumentDB Client object
         /// </summary>
         private void CreateDocumentClient()
         {
-            try
-            {
-                string endpointUri = ConfigurationManager.AppSettings["endPointUri"];
-                string authKey = ConfigurationManager.AppSettings["authKey"];
-                Uri endpoint = new Uri(endpointUri);
-                client = new DocumentClient(endpoint, authKey);
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }            
+            string endpointUri = ConfigurationManager.AppSettings["endPointUri"];
+            string authKey = ConfigurationManager.AppSettings["authKey"];
+            Uri endpoint = new Uri(endpointUri);
+            client = new DocumentClient(endpoint, authKey);
         }
 
         #endregion
@@ -83,34 +73,32 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// <summary>
         /// Creates a new Database if it does not already exist
         /// </summary>
-        /// <param name="databaseId">The Id of the datasbase to create</param>
+        /// <param name="dbid">database id</param>
         /// <returns></returns>
-        public async Task CreateDatabaseAsync(string databaseId)
+        public async Task CreateDatabaseAsync(string dbid)
         {
-            // Try to get the database first, which is assigned to the datasbe property above
-            Task<Database> db = Task<Database>.Factory.StartNew(() => GetDatabase(databaseId));
-            Database = db.Result;
+            // Try to get the database first
+            Database = await GetDatabaseAsync(dbid);
 
             // Create if it does not already exist
             if (Database == null)
             {
-                Database = await Client.CreateDatabaseAsync(new Database { Id = databaseId });                
+                Database = await Client.CreateDatabaseAsync(new Database { Id = dbid });
             }
         }
 
         /// <summary>
         /// Deletes a Database if it exists
         /// </summary>
-        /// <param name="databaseId">The Id of the datasbase to delete</param>
+        /// <param name="dbid">database id</param>
         /// <returns></returns>
-        public async Task DeleteDatabaseAsync(string databaseId)
+        public async Task DeleteDatabaseAsync(string dbid)
         {
             // Try to get the database first
-            Task<Database> db = Task<Database>.Factory.StartNew(() => GetDatabase(databaseId));
-            Database = db.Result;
+            Database = await GetDatabaseAsync(dbid);
 
             // Delete the database if it exists
-            if(Database != null)
+            if (Database != null)
             {
                 await client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(Database.Id));
                 Database = null;
@@ -120,37 +108,33 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         /// <summary>
         /// Gets a specified database
         /// </summary>
-        /// <param name="databaseId">The Id of the datasbase to get</param>
+        /// <param name="dbid">database id</param>
         /// <returns>A Database object if it exists, null otherwise</returns>
-        private Database GetDatabase(string databaseId)
+        protected async Task<Database> GetDatabaseAsync(string dbid)
         {
-            if (String.IsNullOrEmpty(databaseId))
-            {
-                throw new ArgumentNullException("Please specify a database name");
-            }
-            // Query databases that match the id and return the first
-            return Client.CreateDatabaseQuery().Where(db => db.Id == databaseId).AsEnumerable().FirstOrDefault();
+            dbid.Check("No valid database id provided");
+            return await Task.Run(() => Client.CreateDatabaseQuery().Where(db => db.Id == dbid).AsEnumerable().FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Gets the details for a single database
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <returns></returns>
+        public async Task<DatabaseVM> GetDatabaseDetailsAsync(string dbid)
+        {
+            dbid.Check("No valid database id provided");
+            var dbase = await Task.Run(() => Client.CreateDatabaseQuery().Where(db => db.Id == dbid).ToList().Select((d) => ModelFactory.Create(d)));
+            return dbase.FirstOrDefault();
         }
 
         /// <summary>
         /// Gets a list of databases for this account
         /// </summary>
         /// <returns>IEnumerable List of DatabaseVM objects</returns>
-        public IEnumerable<DatabaseVM> GetDatabases()
+        public async Task<IEnumerable<DatabaseVM>> GetDatabaseDetailsAsync()
         {
-            // Query all databases and use the model factory to convert them DTO's
-            return Client.CreateDatabaseQuery().ToList().Select((d) => ModelFactory.Create(d));
-        }
-
-        /// <summary>
-        /// Gets all collections for a specified database
-        /// </summary>
-        /// <param name="databaseId">The name of the database to get the collections for</param>
-        /// <returns>IEnumerable List of colections</returns>
-        public IEnumerable<CollectionVM> GetDocumentCollections(string databaseId)
-        {
-            Task<Database> db = Task.Factory.StartNew(() => this.GetDatabase(databaseId));
-            return Client.CreateDocumentCollectionQuery(db.Result.SelfLink).ToList().Select(c => ModelFactory.Create(c));
+            return await Task.Run(() => Client.CreateDatabaseQuery().ToList().Select((d) => ModelFactory.Create(d)));
         }
 
         #endregion
@@ -164,7 +148,7 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             {
                 if (disposing)
                 {
-                    if(client == null)
+                    if (client == null)
                     {
                         client.Dispose();
                     }

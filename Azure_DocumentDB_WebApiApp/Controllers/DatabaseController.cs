@@ -1,33 +1,34 @@
 ﻿using Azure_DocumentDB_WebApiApp.Controllers.Abstract;
+using Azure_DocumentDB_WebApiApp.Models.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Azure_DocumentDB_WebApiApp.Controllers
 {
-    [RoutePrefix("api/database")]
+    [RoutePrefix("api/db")]
     public class DatabaseController : BaseController
     {
         /// <summary>
         /// Creates a database
         /// </summary>
-        /// <param name="databaseId"></param>
+        /// <param name="dbid"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("{databaseId}")]
-        public async Task<IHttpActionResult> Post(string databaseId)
+        [Route("{dbid}")]
+        public async Task<IHttpActionResult> Post(string dbid)
         {
-            if (String.IsNullOrEmpty(databaseId))
-            {
-                return BadRequest("No valid database name provided");
-            }
-
             try
             {
-                await DataBaseClient.CreateDatabaseAsync(databaseId);
+                await DataBaseClient.CreateDatabaseAsync(dbid);
                 return Created(Request, "Database Created");
             }
-            catch(Exception ex)
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -36,21 +37,43 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <summary>
         /// Deletes a database
         /// </summary>
-        /// <param name="databaseId"></param>
+        /// <param name="dbid"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("{databaseId}")]
-        public async Task<IHttpActionResult> Delete(string databaseId)
+        [Route("{dbid}")]
+        public async Task<IHttpActionResult> Delete(string dbid)
         {
-            if (String.IsNullOrEmpty(databaseId))
-            {
-                return BadRequest("No valid database name provided");
-            }
-
             try
             {
-                await DataBaseClient.DeleteDatabaseAsync(databaseId);
+                await DataBaseClient.DeleteDatabaseAsync(dbid);
                 return Ok("Database Removed");
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Gets a single database
+        /// </summary>
+        /// <param name="dbid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{dbid}")]
+        public async Task<IHttpActionResult> Get(string dbid)
+        {
+            try
+            {
+                return Ok(await DataBaseClient.GetDatabaseDetailsAsync(dbid));
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -64,37 +87,17 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get()
+        public async Task<IEnumerable<DatabaseVM>> Get()
         {
             try
             {
-                var dbList = Task.Factory.StartNew(() => DataBaseClient.GetDatabases());
-                return Ok(dbList.Result);
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of collections for a given database
-        /// </summary>
-        /// <param name="databaseId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("{databaseName}/collections")]
-        public IHttpActionResult Get(string databaseId)
-        {
-            try
-            {
-                var dbList = Task.Factory.StartNew(() => DataBaseClient.GetDocumentCollections(databaseId));
-                return Ok(dbList.Result);
+                return await DataBaseClient.GetDatabaseDetailsAsync();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
     }
 }

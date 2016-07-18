@@ -1,6 +1,7 @@
-﻿using Azure_DocumentDB_WebApiApp.Models.DomainModels;
+﻿using Azure_DocumentDB_WebApiApp.Models.ViewModels;
 using Microsoft.Azure.Documents;
-using System;
+using Microsoft.Azure.Documents.Client;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,73 +17,99 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         #endregion
 
         #region CONSTRUCTORS
-        public CollectionRepository() : base() {}
+        public CollectionRepository() : base() { }
         #endregion
 
         #region COLLECTION METHODS
 
         /// <summary>
-        /// Creates a new document collection if it does not already exist
+        /// Creates a new collection if it does not already exist
         /// </summary>
-        /// <param name="collectionName">The name for the document collection</param>
-        /// <returns>true if collection was created or already exists, otherwise false</returns>
-        public async Task CreateCollectionAsync(CollectionDM collectionModel)
+        /// <param name="dbid">database id</param>
+        /// <param name="colid">collection id</param>
+        /// <returns></returns>
+        public async Task CreateCollectionAsync(string dbid, string colid)
         {
             // Check if document collection already exists
-            Task<DocumentCollection> dc = Task<DocumentCollection>.Factory.StartNew(() => GetDocumentCollection(collectionModel));
-            Collection = dc.Result;
+            Collection = await GetCollectionAsync(dbid, colid);
 
-            // Create it if it does not already exist
             if (Collection == null)
             {
-                Collection = await Client.CreateDocumentCollectionAsync(Database.SelfLink, new DocumentCollection { Id = collectionModel.CollectionId });
+                // Setup collection with custom index policy (lazy indexing)
+                var collectionDefinition = new DocumentCollection();
+                collectionDefinition.Id = colid;
+                collectionDefinition.IndexingPolicy.IndexingMode = IndexingMode.Lazy;
+                var requestOptions = new RequestOptions { OfferThroughput = 400 };
+
+                // Create the collection
+                Collection = await Client.CreateDocumentCollectionAsync(UriFactory.CreateDatabaseUri(dbid), collectionDefinition, requestOptions);
             }
         }
 
         /// <summary>
-        /// Creates a new document collection if it does not already exist
+        /// Deletes a collection if it already exists
         /// </summary>
-        /// <param name="collectionName">The name for the document collection</param>
-        /// <returns>true if collection was created or already exists, otherwise false</returns>
-        public async Task DeleteCollectionAsync(CollectionDM collectionModel)
+        /// <param name="dbid">database id</param>
+        /// <param name="colid">collection id</param>
+        /// <returns></returns>
+        public async Task DeleteCollectionAsync(string dbid, string colid)
         {
             // Check if document collection already exists
-            Task<DocumentCollection> dc = Task<DocumentCollection>.Factory.StartNew(() => GetDocumentCollection(collectionModel));
-            Collection = dc.Result;
+            Collection = await GetCollectionAsync(dbid, colid);
 
             // Delete if it exists
             if (Collection != null)
             {
                 await Client.DeleteDocumentCollectionAsync(Collection.SelfLink);
-                Collection = null;
             }
+
+            Collection = null;
         }
 
         /// <summary>
-        /// Gets a document collection for a specified collection id and database id
+        /// Gets a document collection object for a specified collection id
         /// </summary>
-        /// <param name="collectionModel">The model class containing the database & collection name</param>
-        /// <returns>DocumentCollection object</returns>
-        private DocumentCollection GetDocumentCollection(CollectionDM collectionModel)
+        /// <param name="dbid">database id</param>
+        /// <param name="colid">collection id</param>
+        /// <returns></returns>
+        private async Task<DocumentCollection> GetCollectionAsync(string dbid, string colid)
         {
-            if (collectionModel == null)
+            dbid.Check("No valid database id provided");
+            colid.Check("No valid collection id provided");
+
+            return await Task.Run(() => Client.CreateDocumentCollectionQuery(UriFactory.CreateDatabaseUri(dbid)).Where(c => c.Id == colid).ToArray().FirstOrDefault());
+            //return Client.CreateDocumentCollectionQuery(UriFactory.CreateDatabaseUri(dbid)).Where(c => c.Id == colid).ToArray().FirstOrDefault();
+            //return await Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(dbid, colid));
+        }
+
+        /// <summary>
+        /// Gets the details of collection for a specified collection id
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <param name="colid">collection id</param>
+        /// <returns></returns>
+        public async Task<CollectionVM> GetCollectionDetailsAsync(string dbid, string colid)
+        {
+            var col = await GetCollectionAsync(dbid, colid);
+            return ModelFactory.Create(col);
+        }
+
+        /// <summary>
+        /// Gets a List of collections within a database by calling the ReadFeed (scan) API.
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<CollectionVM>> GetCollectionsDetailsAsync(string dbid)
+        {
+            dbid.Check("No valid database id provided");
+
+            List<CollectionVM> colls = new List<CollectionVM>();
+            foreach (var coll in await Client.ReadDocumentCollectionFeedAsync(UriFactory.CreateDatabaseUri(dbid)))
             {
-                throw new ArgumentNullException("Please specify valid document collection properties");
-            }
-            else if (String.IsNullOrEmpty(collectionModel.CollectionId))
-            {
-                throw new ArgumentNullException("Please specify valid name for the collection");
-            }
-            else if (String.IsNullOrEmpty(collectionModel.DatabaseId))
-            {
-                throw new ArgumentNullException("Please specify valid datasbase name for the collection");
+                colls.Add(ModelFactory.Create(coll));
             }
 
-            // Make sure the database exists
-            Task.Run(() => CreateDatabaseAsync(collectionModel.DatabaseId)).Wait();
-           
-            // Get the document collection
-            return Client.CreateDocumentCollectionQuery(Database.SelfLink).Where(c => c.Id == collectionModel.CollectionId).ToArray().FirstOrDefault();
+            return colls;
         }
 
         #endregion

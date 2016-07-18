@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Azure_DocumentDB_WebApiApp.Models
+
+
 {
     public class Family : DocumentDM
     {        
