@@ -44,7 +44,7 @@ Built using VS2015 Community
 |PUT|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| Document |Replaces a document|
 |DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs/{docid}| |Deletes a document|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs/{docid}| |Gets a single document|
-|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| |Gets a list of document for a specified collection|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| |Gets a list of documents for a specified collection|
 
 ---
 
@@ -56,7 +56,7 @@ Built using VS2015 Community
 |IndexingPolicy|
 |RequestOptions|
 |FeedOptions|
-|asunc / await / Task|
+|async / await / Task|
 |Repository Pattern|
 |Extension Methods|
 |Model Factory|
