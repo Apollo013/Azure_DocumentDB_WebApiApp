@@ -9,11 +9,11 @@ Built using VS2015 Community
 #####CRUD Features
 |Feature|Database|Collection|Document|
 |-------|--------|----------|--------|
-|Insert| Yes | Yes | |
+|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | |
 |Update| | | |
-|Delete| Yes | Yes | |
-|Get / Read One | Yes | Yes | |
-|Get / Read All | Yes | Yes | |
+|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | |
+|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync | |
+|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | |
 
 ---
 
@@ -34,15 +34,6 @@ Built using VS2015 Community
 |DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}| |Deletes a collection|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}| |Gets a single collection|
 |GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls| |Gets a list of collections for a specified database|
-
----
-
-####DocumentClient Methods
-|LEVEL|CREATE|DELETE|UPDATE|GET ONE|GET ALL|
-|-----|------|------|------|-------|-------|
-|Database|CreateDatabaseAsync|DeleteDatabaseAsync| | ReadDatabaseAsync | CreateDatabaseQuery |
-|Collection| CreateDocumentCollectionAsync | DeleteDocumentCollectionAsync | | ReadDocumentCollectionAsync | ReadDocumentCollectionFeedAsync |
-|Document| | | | | |
 
 ---
 
