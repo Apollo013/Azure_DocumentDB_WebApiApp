@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CollectionController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helpers\ActionResults\CreatedActionResult.cs" />
     <Compile Include="Helpers\ExtensionMethods\StringExtensionMethods.cs" />
     <Compile Include="Helpers\ActionResults\NoContentActionResult.cs" />
@@ -206,7 +207,7 @@
     <Compile Include="Repository\CollectionRepository.cs" />
     <Compile Include="Repository\DatabaseRepository.cs" />
     <Compile Include="Repository\DocumentRepository.cs" />
-    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup />

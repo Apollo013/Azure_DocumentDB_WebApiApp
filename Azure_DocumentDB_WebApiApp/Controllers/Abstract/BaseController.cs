@@ -13,7 +13,7 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
         #region PROPERTIES
 
         private DocumentClient _client;
-        protected DocumentClient Client
+        public DocumentClient Client
         {
             get
             {
@@ -41,21 +41,20 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
             }
         }
 
-        private CollectionRepository collectionClient;
+        private CollectionRepository _collectionClient;
         protected CollectionRepository CollectionClient
         {
             get
             {
-                if (collectionClient == null)
+                if (_collectionClient == null)
                 {
-                    collectionClient = new CollectionRepository(Client);
+                    _collectionClient = new CollectionRepository(Client);
                 }
-                return collectionClient;
+                return _collectionClient;
             }
         }
 
         private DocumentRepository _documentClient;
-
         protected DocumentRepository DocumentClient
         {
             get
@@ -67,6 +66,20 @@ namespace Azure_DocumentDB_WebApiApp.Controllers.Abstract
                 return _documentClient;
             }
             set { _documentClient = value; }
+        }
+
+        private UserRepository _userClient;
+        public UserRepository UserClient
+        {
+            get
+            {
+                if (_userClient == null)
+                {
+                    _userClient = new UserRepository(Client);
+                }
+                return _userClient;
+            }
+            set { _userClient = value; }
         }
 
         #endregion
