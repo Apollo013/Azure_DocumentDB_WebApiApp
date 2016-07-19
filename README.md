@@ -9,11 +9,11 @@ Built using VS2015 Community
 #####CRUD Features
 |Feature|Database|Collection|Document|
 |-------|--------|----------|--------|
-|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | |
-|Update| | | |
-|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | |
-|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync | |
-|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | |
+|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | CreateDocumentCollectionUri |
+|Update| | | ReplaceDocumentAsync |
+|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | DeleteDocumentAsync |
+|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync |ReadDocumentAsync |
+|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | ReadDocumentFeedAsync |
 
 ---
 
@@ -37,16 +37,29 @@ Built using VS2015 Community
 
 ---
 
+####Document Http Requests
+|Verb|Url|Data|Description|
+|----|---|----|-----------|
+|POST|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| Document |Creates a new document|
+|PUT|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| Document |Replaces a document|
+|DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs/{docid}| |Deletes a document|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs/{docid}| |Gets a single document|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/colls/{colid}/docs| |Gets a list of documents for a specified collection|
+
+---
+
 ####Misc Code Features
 |Feature|
 |-------|
 |DocumentClientException|
-|DocumentClient| 
 |UriFactory|
 |IndexingPolicy|
 |RequestOptions|
-|asunc / await / Task|
+|FeedOptions|
+|async / await / Task|
 |Repository Pattern|
+|Extension Methods|
+|Model Factory|
 
 ---
 ####Resources
