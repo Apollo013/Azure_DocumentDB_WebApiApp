@@ -7,14 +7,14 @@ Built using VS2015 Community
 ---
 
 #####CRUD Features
-|Feature|Database|Collection|Document|
-|-------|--------|----------|--------|
-|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | CreateDocumentCollectionUri |
-|Update| | | ReplaceDocumentAsync |
-|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | DeleteDocumentAsync |
-|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync |ReadDocumentAsync |
-|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | ReadDocumentFeedAsync |
-
+|Feature|Database|Collection|Document|Users|
+|-------|--------|----------|--------|-----|
+|Create| CreateDatabaseAsync | CreateDocumentCollectionAsync | CreateDocumentCollectionUri | CreateUserAsync |
+|Update| | | ReplaceDocumentAsync | | 
+|Delete| DeleteDatabaseAsync | DeleteDocumentCollectionAsync | DeleteDocumentAsync | DeleteUserAsync |
+|Get / Read One | ReadDatabaseAsync | ReadDocumentCollectionAsync |ReadDocumentAsync | ReadUserAsync | 
+|Get / Read All | CreateDatabaseQuery | ReadDocumentCollectionFeedAsync | ReadDocumentFeedAsync | |
+|Set Permission | | CreatePermissionAsync | | CreatePermissionAsync |
 ---
 
 ####Database Http Requests
@@ -48,10 +48,20 @@ Built using VS2015 Community
 
 ---
 
+####User Http Requests
+|Verb|Url|Data|Description|
+|----|---|----|-----------|
+|POST|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Creates a new user|
+|DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Deletes a user|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Gets a single user|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}/colls/{colid}/{permissionMode}| |Sets the permission mode on a collection for a user|
+---
+
 ####Misc Code Features
 |Feature|
 |-------|
 |DocumentClientException|
+|AggregateException|
 |UriFactory|
 |IndexingPolicy|
 |RequestOptions|
@@ -60,8 +70,12 @@ Built using VS2015 Community
 |Repository Pattern|
 |Extension Methods|
 |Model Factory|
+|TimeSpan|
+|Function 'RetryAfter' |
+|Func delegate|
 
 ---
+
 ####Resources
 |Title|Author|Publisher|
 |-----|------|---------|
