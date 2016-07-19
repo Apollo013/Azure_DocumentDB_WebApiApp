@@ -48,6 +48,15 @@ Built using VS2015 Community
 
 ---
 
+####User Http Requests
+|Verb|Url|Data|Description|
+|----|---|----|-----------|
+|POST|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Creates a new user|
+|DELETE|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Deletes a user|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}| |Gets a single user|
+|GET|http://localhost:[YOUR_PORT_NUMBER]/api/db/{dbid}/users/{userid}/colls/{colid}/{permissionMode}| |Sets the permission mode on a collection for a user|
+---
+
 ####Misc Code Features
 |Feature|
 |-------|
