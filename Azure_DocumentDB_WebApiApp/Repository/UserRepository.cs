@@ -49,6 +49,17 @@ namespace Azure_DocumentDB_WebApiApp.Repository
         }
 
         /// <summary>
+        /// Gets a user
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <param name="userid">user id</param>
+        /// <returns></returns>
+        public async Task<User> GetUserAsync(string dbid, string userid)
+        {
+            return await Client.ReadUserAsync(UriFactory.CreateUserUri(dbid, userid));
+        }
+
+        /// <summary>
         /// Creates /assigns permission for a user
         /// </summary>
         /// <param name="dbid">database id</param>
@@ -63,50 +74,16 @@ namespace Azure_DocumentDB_WebApiApp.Repository
             ResourceResponse<Permission> response;
             Permission permission;
 
-            try
+            dc = await Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(dbid, colid));
+            user = await Client.ReadUserAsync(UriFactory.CreateUserUri(dbid, userid));
+            permission = new Permission
             {
-                dc = await Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(dbid, colid));
-            }
-            catch (Exception)
-            {
-                throw new ArgumentNullException("Cannot find collection");
-            }
+                Id = Guid.NewGuid().ToString("N"),
+                PermissionMode = (PermissionMode)permissionMode,
+                ResourceLink = dc.SelfLink
+            };
 
-
-            try
-            {
-                user = await Client.ReadUserAsync(UriFactory.CreateUserUri(dbid, userid));
-            }
-            catch (Exception)
-            {
-                throw new ArgumentNullException("Cannot find user");
-            }
-
-
-            try
-            {
-                permission = new Permission
-                {
-                    Id = Guid.NewGuid().ToString("N"),
-                    PermissionMode = (PermissionMode)permissionMode,
-                    ResourceLink = dc.SelfLink
-                };
-            }
-            catch (Exception)
-            {
-                throw new ArgumentNullException("error creating permission");
-            }
-
-
-            try
-            {
-                response = await ExecuteWithRetries<ResourceResponse<Permission>>(() => Client.CreatePermissionAsync(user.SelfLink, permission));
-            }
-            catch (Exception)
-            {
-                throw new ArgumentNullException("error getting response");
-            }
-
+            response = await ExecuteWithRetries<ResourceResponse<Permission>>(() => Client.CreatePermissionAsync(user.SelfLink, permission));
 
             return response.Resource;
         }

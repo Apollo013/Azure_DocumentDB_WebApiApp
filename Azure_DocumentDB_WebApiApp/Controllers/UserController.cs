@@ -59,6 +59,31 @@ namespace Azure_DocumentDB_WebApiApp.Controllers
         }
 
         /// <summary>
+        /// Deletes a new user
+        /// </summary>
+        /// <param name="dbid">database id</param>
+        /// <param name="userid">user id</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{userid}")]
+        public async Task<IHttpActionResult> Get(string dbid, string userid)
+        {
+            try
+            {
+                var user = await UserClient.GetUserAsync(dbid, userid);
+                return Ok(user);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
         /// Assigns permission for a user to a collection
         /// </summary>
         /// <param name="dbid">database id</param>
