@@ -2,6 +2,10 @@
 
 ---
 
+A WebApi (OWIN) demonstrating how to manage DocumentDB Databases, Collections, Documents & Users/Permissions. Requires Fiddler or POSTMAN to test.
+
+---
+
 Built using VS2015 Community
 
 ---
