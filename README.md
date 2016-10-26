@@ -1,8 +1,8 @@
-# Azure_DocumentDB_WebApiApp
+# NoSql_DocumentDB
 
 ---
 
-A WebApi (OWIN) demonstrating how to manage DocumentDB Databases, Collections, Documents & Users/Permissions. Requires Fiddler or POSTMAN to test.
+A WebApi demonstrating how to manage DocumentDB Databases, Collections, Documents & Users/Permissions. Requires Fiddler or POSTMAN to test.
 
 ---
 
